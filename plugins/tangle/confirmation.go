@@ -71,12 +71,7 @@ func confirmMilestone(milestoneIndex milestone_index.MilestoneIndex, milestoneTa
 			txBundle := tx.GetTransaction().Tx.Bundle
 			tx.Release() //-1
 
-			bundleBucket, err := tangle.GetBundleBucket(txBundle)
-			if err != nil {
-				log.Panicf("confirmMilestone: BundleBucket not found: %v, Error: %v", txBundle, err)
-			}
-
-			bundle := bundleBucket.GetBundleOfTailTransaction(txHash)
+			bundle := tangle.GetBundleOfTailTransaction(txBundle, txHash)
 			if bundle == nil {
 				log.Panicf("confirmMilestone: Tx: %v, Bundle not found: %v", txHash, txBundle)
 			}
@@ -119,13 +114,8 @@ func confirmMilestone(milestoneIndex milestone_index.MilestoneIndex, milestoneTa
 		}
 
 		// confirm all txs of the bundle
-		bundleBucket, err := tangle.GetBundleBucket(cachedTx.GetTransaction().Tx.Bundle)
-		if err != nil {
-			log.Panicf("confirmMilestone: BundleBucket not found: %v, Error: %v", cachedTx.GetTransaction().Tx.Bundle, err)
-		}
-
 		// we are only iterating over tail txs
-		bundle := bundleBucket.GetBundleOfTailTransaction(txHash)
+		bundle := tangle.GetBundleOfTailTransaction(cachedTx.GetTransaction().Tx.Bundle, txHash)
 		if bundle == nil {
 			log.Panicf("confirmMilestone: Tx: %v, Bundle not found: %v", txHash, cachedTx.GetTransaction().Tx.Bundle)
 		}

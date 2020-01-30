@@ -32,8 +32,6 @@ func configure(plugin *node.Plugin) {
 	belowMaxDepthTransactionLimit = parameter.NodeConfig.GetInt("tipsel.belowMaxDepthTransactionLimit")
 	configureRefsAnInvalidBundleStorage()
 
-	tangle.InitBundleCache()
-
 	tangle.ConfigureDatabases(parameter.NodeConfig.GetString("db.path"), &profile.GetProfile().Badger)
 
 	tangle.InitSpentAddressesCuckooFilter()
@@ -67,7 +65,7 @@ func configure(plugin *node.Plugin) {
 
 		log.Info("Flushing caches to database...")
 		tangle.ShutdownMilestoneStorage()
-		tangle.FlushBundleCache()
+		tangle.ShutdownBundleTransactionsStorage()
 		tangle.ShutdownTransactionStorage()
 		tangle.ShutdownApproversStorage()
 		if err := tangle.StoreSpentAddressesCuckooFilterInDatabase(); err != nil {

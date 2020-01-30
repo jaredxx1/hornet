@@ -60,6 +60,7 @@ func configureApproversStorage() {
 		objectstorage.PartitionKey(49, 49))
 }
 
+// +1
 func GetCachedApprovers(transactionHash trinary.Hash) CachedAppprovers {
 	txHash := trinary.MustTrytesToBytes(transactionHash)[:49]
 
@@ -73,6 +74,7 @@ func GetCachedApprovers(transactionHash trinary.Hash) CachedAppprovers {
 	return approvers
 }
 
+// +1
 func StoreApprover(transactionHash trinary.Hash, approverHash trinary.Hash) *CachedApprover {
 
 	approver := &hornet.Approver{
@@ -83,6 +85,7 @@ func StoreApprover(transactionHash trinary.Hash, approverHash trinary.Hash) *Cac
 	return &CachedApprover{approversStorage.Store(approver)}
 }
 
+// +-0
 func DeleteApprovers(transactionHash trinary.Hash) {
 
 	txHash := trinary.MustTrytesToBytes(transactionHash)[:49]
